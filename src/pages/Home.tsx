@@ -1,5 +1,15 @@
-function Home() {
-  return <h1>Home</h1>;
-}
+import { Button, Container } from '@mui/material';
 
-export default Home;
+export default function Home() {
+  const logout = () => {
+    localStorage.clear();
+    window.location.reload();
+  };
+
+  return (
+    <Container>
+      <h1>Home</h1>
+      <Button onClick={logout}>Logout</Button>
+    </Container>
+  );
+}

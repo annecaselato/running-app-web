@@ -1,15 +1,11 @@
 import { Navigate, Outlet } from 'react-router-dom';
 
-function PrivateRoute() {
-  const user = {
-    name: 'User'
-  };
+export default function PrivateRoute() {
+  const access_token = localStorage.getItem('access_token');
 
-  if (user) {
+  if (!access_token) {
     return <Navigate to={'/sign-in'} replace />;
   }
 
   return <Outlet />;
 }
-
-export default PrivateRoute;

@@ -1,6 +1,9 @@
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
+import { Navigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { ApolloError, gql, useMutation } from '@apollo/client';
 import {
   Avatar,
   Box,
@@ -14,12 +17,31 @@ import {
 } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
+export const SIGN_IN = gql`
+  mutation SignIn($email: String!, $password: String!) {
+    signIn(signInInput: { email: $email, password: $password }) {
+      access_token
+      user {
+        id
+        name
+      }
+    }
+  }
+`;
+
 const signInSchema = yup.object({
   email: yup.string().email().required(),
   password: yup.string().required()
 });
 
+const onError = (error: ApolloError) => {
+  toast.error(error.message, {
+    position: toast.POSITION.BOTTOM_CENTER
+  });
+};
+
 export default function SignIn() {
+  const [signIn, { data }] = useMutation(SIGN_IN, { onError });
   const {
     handleSubmit,
     register,
@@ -27,8 +49,26 @@ export default function SignIn() {
   } = useForm({ mode: 'onChange', resolver: yupResolver(signInSchema) });
 
   const onSubmit = async (values: { email: string; password: string }) => {
-    console.log(values);
+    try {
+      await signIn({
+        variables: {
+          email: values.email,
+          password: values.password
+        }
+      });
+    } catch {
+      toast.error('An error occurred. Please try again.');
+    }
   };
+
+  if (data) {
+    const { access_token, user } = data.signIn;
+
+    localStorage.setItem('access_token', access_token);
+    localStorage.setItem('user', JSON.stringify(user));
+
+    return <Navigate to={'/'} replace />;
+  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -84,6 +124,7 @@ export default function SignIn() {
             </Grid>
           </Grid>
         </Box>
+        <ToastContainer />
       </Box>
     </Container>
   );

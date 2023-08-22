@@ -1,8 +1,21 @@
+import { ApolloError, gql, useMutation } from '@apollo/client';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
+import { Navigate } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Avatar, Box, Button, Container, Grid, Link, TextField, Typography } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import { SIGN_IN } from './SignIn';
+import { ToastContainer, toast } from 'react-toastify';
+
+export const CREATE_USER = gql`
+  mutation CreateUser($name: String!, $email: String!, $password: String!) {
+    createUser(createUserInput: { email: $email, name: $name, password: $password }) {
+      name
+      email
+    }
+  }
+`;
 
 const userSchema = yup.object({
   name: yup.string().trim().required(),
@@ -10,7 +23,15 @@ const userSchema = yup.object({
   password: yup.string().required().min(5)
 });
 
+const onError = (error: ApolloError) => {
+  toast.error(error.message, {
+    position: toast.POSITION.BOTTOM_CENTER
+  });
+};
+
 export default function SignUp() {
+  const [createUser] = useMutation(CREATE_USER, { onError });
+  const [signIn, { data }] = useMutation(SIGN_IN, { onError });
   const {
     handleSubmit,
     register,
@@ -18,8 +39,31 @@ export default function SignUp() {
   } = useForm({ mode: 'onChange', resolver: yupResolver(userSchema) });
 
   const onSubmit = async (values: { name: string; email: string; password: string }) => {
-    console.log(values);
+    try {
+      const response = await createUser({
+        variables: {
+          name: values.name,
+          email: values.email,
+          password: values.password
+        }
+      });
+
+      if (response && response.data) {
+        signIn({ variables: { email: values.email, password: values.password } });
+      }
+    } catch {
+      toast.error('An error occurred. Please try again.');
+    }
   };
+
+  if (data) {
+    const { access_token, user } = data.signIn;
+
+    localStorage.setItem('access_token', access_token);
+    localStorage.setItem('user', JSON.stringify(user));
+
+    return <Navigate to={'/'} replace />;
+  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -85,6 +129,7 @@ export default function SignUp() {
             </Grid>
           </Grid>
         </Box>
+        <ToastContainer />
       </Box>
     </Container>
   );

@@ -4,7 +4,7 @@ import Home from './pages/Home';
 import SignUp from './pages/SignUp';
 import SignIn from './pages/SignIn';
 
-export const AppRoutes = () => {
+export default function AppRoutes() {
   return (
     <BrowserRouter>
       <Routes>
@@ -18,4 +18,4 @@ export const AppRoutes = () => {
       </Routes>
     </BrowserRouter>
   );
-};
+}
