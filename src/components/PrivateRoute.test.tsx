@@ -16,12 +16,12 @@ const renderRoutes = () => {
 };
 
 describe('PrivateRoute', () => {
-  test('redirects to sign-in page if not authenticated', () => {
+  it('redirects to sign-in page if not authenticated', () => {
     renderRoutes();
     expect(screen.getByText('Sign In Page')).toBeInTheDocument();
   });
 
-  test('renders Outlet if authenticated', () => {
+  it('renders Outlet if authenticated', () => {
     localStorage.setItem('access_token', 'access-token');
 
     renderRoutes();

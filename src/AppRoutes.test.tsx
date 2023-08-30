@@ -30,13 +30,13 @@ const renderHome = () =>
   );
 
 describe('AppRoutes', () => {
-  test('renders sign-in page for unauthenticated user', () => {
+  it('renders sign-in page for unauthenticated user', () => {
     renderHome();
 
     expect(screen.getByText('Mocked SignIn')).toBeInTheDocument();
   });
 
-  test('renders home page for authenticated user', () => {
+  it('renders home page for authenticated user', () => {
     localStorage.setItem('access_token', 'access-token');
 
     renderHome();

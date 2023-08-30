@@ -7,7 +7,7 @@ jest.mock('./App', () => ({
   default: jest.fn(() => <div className="App">Mocked App Component</div>)
 }));
 
-test('renders the app', () => {
+it('renders the app', () => {
   const { container } = render(
     <MockedProvider>
       <App />

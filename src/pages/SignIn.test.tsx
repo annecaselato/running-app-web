@@ -42,7 +42,7 @@ const errorMocks = [
 ];
 
 describe('Sign In', () => {
-  test('renders SignIn component and submits form', async () => {
+  it('renders SignIn component and submits form', async () => {
     render(
       <MemoryRouter>
         <MockedProvider mocks={mocks} addTypename={false}>
@@ -58,7 +58,7 @@ describe('Sign In', () => {
     });
   });
 
-  test('renders SignIn component and handles API error', async () => {
+  it('renders SignIn component and handles API error', async () => {
     render(
       <MockedProvider mocks={errorMocks} addTypename={false}>
         <SignIn />
@@ -76,7 +76,7 @@ describe('Sign In', () => {
     });
   });
 
-  test('handles form error', async () => {
+  it('handles form error', async () => {
     render(
       <MockedProvider mocks={errorMocks} addTypename={false}>
         <SignIn />

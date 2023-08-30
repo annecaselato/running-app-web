@@ -12,7 +12,7 @@ jest.mock('@mui/material/styles/ThemeProvider', () => ({
 }));
 
 describe('App', () => {
-  test('renders app routes', () => {
+  it('renders app routes', () => {
     const { container } = render(<App />);
 
     waitFor(() => {
