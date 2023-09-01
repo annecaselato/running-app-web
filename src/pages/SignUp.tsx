@@ -1,12 +1,12 @@
 import { ApolloError, gql, useMutation } from '@apollo/client';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Avatar, Box, Button, Container, Grid, Link, TextField, Typography } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { SIGN_IN } from './SignIn';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 export const CREATE_USER = gql`
   mutation CreateUser($name: String!, $email: String!, $password: String!) {
@@ -18,20 +18,25 @@ export const CREATE_USER = gql`
 `;
 
 const userSchema = yup.object({
-  name: yup.string().trim().required(),
-  email: yup.string().email().required(),
-  password: yup.string().required().min(5)
+  name: yup.string().trim().required('Name is required'),
+  email: yup.string().email('Must be a valid email').required('Email is required'),
+  password: yup
+    .string()
+    .required('Password is required')
+    .min(
+      8,
+      'Must contain 8 or more characters with at least one of each:\n uppercase, lowercase, number and symbol'
+    )
+    .matches(/(?=.*[a-z])/, 'Must contain at least 1 lowercase letter')
+    .matches(/(?=.*[A-Z])/, 'Must contain at least 1 uppercase letter')
+    .matches(/(?=.*\d)/, 'Must contain at least 1 number')
+    .matches(/(?=.*\W)/, 'Must contain at least 1 special character')
 });
 
-const onError = (error: ApolloError) => {
-  toast.error(error.message, {
-    position: toast.POSITION.BOTTOM_CENTER
-  });
-};
-
 export default function SignUp() {
-  const [createUser] = useMutation(CREATE_USER, { onError });
-  const [signIn, { data }] = useMutation(SIGN_IN, { onError });
+  const navigate = useNavigate();
+  const [createUser] = useMutation(CREATE_USER);
+  const [signIn, { data }] = useMutation(SIGN_IN);
   const {
     handleSubmit,
     register,
@@ -51,8 +56,12 @@ export default function SignUp() {
       if (response && response.data) {
         signIn({ variables: { email: values.email, password: values.password } });
       }
-    } catch {
-      toast.error('An error occurred. Please try again.');
+    } catch (err) {
+      if (err instanceof ApolloError && err.graphQLErrors.length) {
+        toast.error(err.graphQLErrors[0].message, {
+          position: toast.POSITION.BOTTOM_CENTER
+        });
+      }
     }
   };
 
@@ -62,7 +71,7 @@ export default function SignUp() {
     localStorage.setItem('access_token', access_token);
     localStorage.setItem('user', JSON.stringify(user));
 
-    return <Navigate to={'/'} replace />;
+    navigate('/', { replace: true });
   }
 
   return (
@@ -123,13 +132,10 @@ export default function SignUp() {
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
-              <Link href="/sign-in" variant="body2">
-                Already have an account? Sign in
-              </Link>
+              <Link href="/sign-in">Already have an account? Sign in</Link>
             </Grid>
           </Grid>
         </Box>
-        <ToastContainer />
       </Box>
     </Container>
   );

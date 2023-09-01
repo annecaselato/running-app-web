@@ -12,6 +12,7 @@ import {
 } from '@mui/material';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import { AccountCircle, Logout, Menu as MenuIcon, PersonOutline } from '@mui/icons-material';
+import { logout } from '../logout';
 
 interface AppHeaderProps {
   title: string;
@@ -59,9 +60,7 @@ export default function AppHeader({ title, openDrawer, handleDrawerOpen }: AppHe
   };
 
   const handleSignOut = () => {
-    handleMenuClose();
-    localStorage.clear();
-    window.location.reload();
+    logout();
   };
 
   return (

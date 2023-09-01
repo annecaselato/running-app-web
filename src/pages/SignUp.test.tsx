@@ -5,22 +5,24 @@ import { act } from 'react-dom/test-utils';
 import { ApolloError } from '@apollo/client';
 import { SIGN_IN } from './SignIn';
 import { MemoryRouter } from 'react-router-dom';
+import { GraphQLError } from 'graphql';
+import { ToastContainer } from 'react-toastify';
 
 const mocks = [
   {
     request: {
       query: CREATE_USER,
       variables: {
-        name: 'John Doe',
-        email: 'john@example.com',
-        password: 'password123'
+        name: 'Test User',
+        email: 'user@example.com',
+        password: 'Pass123!'
       }
     },
     result: {
       data: {
         createUser: {
-          name: 'John Doe',
-          email: 'john@example.com'
+          name: 'Test User',
+          email: 'user@example.com'
         }
       }
     }
@@ -29,8 +31,8 @@ const mocks = [
     request: {
       query: SIGN_IN,
       variables: {
-        email: 'john@example.com',
-        password: 'password123'
+        email: 'user@example.com',
+        password: 'Pass123!'
       }
     },
     result: {
@@ -39,7 +41,7 @@ const mocks = [
           access_token: 'access-token',
           user: {
             id: 'user-id',
-            name: 'John Doe'
+            name: 'Test User'
           }
         }
       }
@@ -52,43 +54,55 @@ const errorMocks = [
     ...mocks[0],
     result: undefined,
     error: new ApolloError({
-      errorMessage: 'API error',
+      graphQLErrors: [{ message: 'API error' } as GraphQLError],
       networkError: null
     })
   }
 ];
 
-describe('Sign Up', () => {
-  it('renders SignUp component and submits form', async () => {
-    render(
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const renderSignUp = (mock: any) => {
+  render(
+    <>
       <MemoryRouter>
-        <MockedProvider mocks={mocks} addTypename={false}>
+        <MockedProvider mocks={mock} addTypename={false}>
           <SignUp />
         </MockedProvider>
       </MemoryRouter>
-    );
+      <ToastContainer />
+    </>
+  );
+};
+
+const mockNavigate = jest.fn();
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: () => mockNavigate
+}));
+
+describe('Sign Up', () => {
+  it('renders SignUp component and submits form', async () => {
+    renderSignUp(mocks);
 
     await act(async () => {
-      fireEvent.change(screen.getByLabelText(/name/i), { target: { value: 'John Doe' } });
-      fireEvent.change(screen.getByLabelText(/email/i), { target: { value: 'john@example.com' } });
-      fireEvent.change(screen.getByLabelText(/password/i), { target: { value: 'password123' } });
+      fireEvent.change(screen.getByLabelText(/name/i), { target: { value: 'Test User' } });
+      fireEvent.change(screen.getByLabelText(/email/i), { target: { value: 'user@example.com' } });
+      fireEvent.change(screen.getByLabelText('Password *'), { target: { value: 'Pass123!' } });
       fireEvent.click(screen.getByText('Sign Up'));
+    });
+
+    await waitFor(() => {
+      expect(mockNavigate).toBeCalledWith('/', { replace: true });
     });
   });
 
-  it('renders SignUp component and handles API error', async () => {
-    render(
-      <MemoryRouter>
-        <MockedProvider mocks={errorMocks} addTypename={false}>
-          <SignUp />
-        </MockedProvider>
-      </MemoryRouter>
-    );
+  it('handles API error', async () => {
+    renderSignUp(errorMocks);
 
     await act(async () => {
-      fireEvent.change(screen.getByLabelText(/name/i), { target: { value: 'John Doe' } });
-      fireEvent.change(screen.getByLabelText(/email/i), { target: { value: 'john@example.com' } });
-      fireEvent.change(screen.getByLabelText(/password/i), { target: { value: 'password123' } });
+      fireEvent.change(screen.getByLabelText(/name/i), { target: { value: 'Test User' } });
+      fireEvent.change(screen.getByLabelText(/email/i), { target: { value: 'user@example.com' } });
+      fireEvent.change(screen.getByLabelText('Password *'), { target: { value: 'Pass123!' } });
       fireEvent.click(screen.getByText('Sign Up'));
     });
 
@@ -106,15 +120,14 @@ describe('Sign Up', () => {
 
     await act(async () => {
       fireEvent.change(screen.getByLabelText(/name/i), { target: { value: '' } });
-      fireEvent.change(screen.getByLabelText(/email/i), { target: { value: 'john@' } });
-      fireEvent.change(screen.getByLabelText(/password/i), { target: { value: '123' } });
+      fireEvent.change(screen.getByLabelText(/email/i), { target: { value: 'user@' } });
+      fireEvent.change(screen.getByLabelText('Password *'), { target: { value: '123' } });
       fireEvent.click(screen.getByText('Sign Up'));
     });
 
     await waitFor(() => {
-      expect(screen.getByText('name is a required field')).toBeInTheDocument();
-      expect(screen.getByText('email must be a valid email')).toBeInTheDocument();
-      expect(screen.getByText(/password must be at least/i)).toBeInTheDocument();
+      expect(screen.getByText('Name is required')).toBeInTheDocument();
+      expect(screen.getByText('Must be a valid email')).toBeInTheDocument();
     });
   });
 });

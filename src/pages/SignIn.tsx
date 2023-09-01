@@ -1,7 +1,7 @@
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
-import { Navigate } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ApolloError, gql, useMutation } from '@apollo/client';
 import {
@@ -24,6 +24,7 @@ export const SIGN_IN = gql`
       user {
         id
         name
+        email
       }
     }
   }
@@ -34,14 +35,9 @@ const signInSchema = yup.object({
   password: yup.string().required()
 });
 
-const onError = (error: ApolloError) => {
-  toast.error(error.message, {
-    position: toast.POSITION.BOTTOM_CENTER
-  });
-};
-
 export default function SignIn() {
-  const [signIn, { data }] = useMutation(SIGN_IN, { onError });
+  const navigate = useNavigate();
+  const [signIn, { data }] = useMutation(SIGN_IN);
   const {
     handleSubmit,
     register,
@@ -56,8 +52,12 @@ export default function SignIn() {
           password: values.password
         }
       });
-    } catch {
-      toast.error('An error occurred. Please try again.');
+    } catch (err) {
+      if (err instanceof ApolloError && err.graphQLErrors.length) {
+        toast.error(`Sign in failed: ${err.graphQLErrors[0].message}`, {
+          position: toast.POSITION.BOTTOM_CENTER
+        });
+      }
     }
   };
 
@@ -67,7 +67,7 @@ export default function SignIn() {
     localStorage.setItem('access_token', access_token);
     localStorage.setItem('user', JSON.stringify(user));
 
-    return <Navigate to={'/'} replace />;
+    navigate('/', { replace: true });
   }
 
   return (
@@ -124,7 +124,6 @@ export default function SignIn() {
             </Grid>
           </Grid>
         </Box>
-        <ToastContainer />
       </Box>
     </Container>
   );

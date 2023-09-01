@@ -1,9 +1,11 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import AppHeader from './AppHeader';
+import { logout } from '../logout';
 
 const mockNavigate = jest.fn();
 const mockHandleDrawerOpen = jest.fn();
 
+jest.mock('../logout');
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
   useNavigate: () => mockNavigate
@@ -52,6 +54,6 @@ describe('AppHeader', () => {
     fireEvent.click(screen.getByLabelText('menu-button'));
     fireEvent.click(screen.getByText('Sign out'));
 
-    expect(localStorage.length).toEqual(0);
+    expect(logout).toHaveBeenCalledTimes(1);
   });
 });
