@@ -6,6 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Avatar, Box, Button, Container, Grid, Link, TextField, Typography } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { SIGN_IN } from './SignIn';
+import PasswordInput from '../components/PasswordInput';
 import { toast } from 'react-toastify';
 
 export const CREATE_USER = gql`
@@ -115,16 +116,7 @@ export default function SignUp() {
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                label="Password"
-                type="password"
-                id="password"
-                {...register('password')}
-                error={!!errors.password}
-                helperText={errors.password && (errors.password.message as string)}
-              />
+              <PasswordInput label="Password" name="password" register={register} errors={errors} />
             </Grid>
           </Grid>
           <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>

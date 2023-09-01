@@ -16,6 +16,7 @@ import {
   Typography
 } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import PasswordInput from '../components/PasswordInput';
 
 export const SIGN_IN = gql`
   mutation SignIn($email: String!, $password: String!) {
@@ -100,16 +101,7 @@ export default function SignIn() {
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                label="Password"
-                type="password"
-                id="password"
-                {...register('password')}
-                error={!!errors.password}
-                helperText={errors.password && (errors.password.message as string)}
-              />
+              <PasswordInput label="Password" name="password" register={register} errors={errors} />
             </Grid>
           </Grid>
           <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
