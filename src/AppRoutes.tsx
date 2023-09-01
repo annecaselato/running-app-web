@@ -3,6 +3,7 @@ import PrivateRoute from './components/PrivateRoute';
 import Home from './pages/Home';
 import SignUp from './pages/SignUp';
 import SignIn from './pages/SignIn';
+import Profile from './pages/Profile';
 
 export default function AppRoutes() {
   return (
@@ -14,6 +15,7 @@ export default function AppRoutes() {
         {/* Private routes */}
         <Route element={<PrivateRoute />}>
           <Route path="/" element={<Home />} />
+          <Route path="/profile" element={<Profile />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -8,6 +8,9 @@ const drawerWidth = 240;
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
   open?: boolean;
 }>(({ theme, open }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
   flexGrow: 1,
   padding: theme.spacing(3),
   transition: theme.transitions.create('margin', {
