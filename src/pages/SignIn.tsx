@@ -17,10 +17,24 @@ import {
 } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import PasswordInput from '../components/PasswordInput';
+import { GoogleCredentialResponse, GoogleLogin } from '@react-oauth/google';
 
 export const SIGN_IN = gql`
   mutation SignIn($email: String!, $password: String!) {
     signIn(signInInput: { email: $email, password: $password }) {
+      access_token
+      user {
+        id
+        name
+        email
+      }
+    }
+  }
+`;
+
+export const SIGN_IN_OIDC = gql`
+  mutation SignInOIDC($token: String!) {
+    signInOIDC(signInOIDCInput: { token: $token }) {
       access_token
       user {
         id
@@ -38,7 +52,8 @@ const signInSchema = yup.object({
 
 export default function SignIn() {
   const navigate = useNavigate();
-  const [signIn, { data }] = useMutation(SIGN_IN);
+  const [signIn] = useMutation(SIGN_IN);
+  const [signInOIDC] = useMutation(SIGN_IN_OIDC);
   const {
     handleSubmit,
     register,
@@ -47,12 +62,21 @@ export default function SignIn() {
 
   const onSubmit = async (values: { email: string; password: string }) => {
     try {
-      await signIn({
+      const response = await signIn({
         variables: {
           email: values.email,
           password: values.password
         }
       });
+
+      if (response?.data) {
+        const { access_token, user } = response.data.signIn;
+
+        localStorage.setItem('access_token', access_token);
+        localStorage.setItem('user', JSON.stringify(user));
+
+        navigate('/', { replace: true });
+      }
     } catch (err) {
       if (err instanceof ApolloError && err.graphQLErrors.length) {
         toast.error(`Sign in failed: ${err.graphQLErrors[0].message}`, {
@@ -62,14 +86,30 @@ export default function SignIn() {
     }
   };
 
-  if (data) {
-    const { access_token, user } = data.signIn;
+  const handleGoogleLogin = async (credentialResponse: GoogleCredentialResponse) => {
+    try {
+      const response = await signInOIDC({
+        variables: {
+          token: credentialResponse.credential
+        }
+      });
 
-    localStorage.setItem('access_token', access_token);
-    localStorage.setItem('user', JSON.stringify(user));
+      if (response?.data) {
+        const { access_token, user } = response.data.signInOIDC;
 
-    navigate('/', { replace: true });
-  }
+        localStorage.setItem('access_token', access_token);
+        localStorage.setItem('user', JSON.stringify(user));
+
+        navigate('/', { replace: true });
+      }
+    } catch (err) {
+      if (err instanceof ApolloError && err.graphQLErrors.length) {
+        toast.error('Sign in failed. Please try again.', {
+          position: toast.POSITION.BOTTOM_CENTER
+        });
+      }
+    }
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -115,6 +155,15 @@ export default function SignIn() {
               <Link href="/sign-up">{"Don't have an account? Sign Up"}</Link>
             </Grid>
           </Grid>
+          <GoogleLogin
+            data-testid="google-login"
+            onSuccess={handleGoogleLogin}
+            onError={() => {
+              toast.error('Sign in failed. Please try again.', {
+                position: toast.POSITION.BOTTOM_CENTER
+              });
+            }}
+          />
         </Box>
       </Box>
     </Container>
