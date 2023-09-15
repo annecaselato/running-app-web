@@ -122,7 +122,8 @@ export default function Profile() {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'stretch',
-          maxWidth: 500
+          maxWidth: 500,
+          padding: 3
         }}>
         <Typography component="h1" variant="h5">
           Edit Profile
