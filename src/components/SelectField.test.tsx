@@ -4,7 +4,11 @@ import SelectField from './SelectField';
 const renderSelect = () =>
   render(
     <SelectField
-      options={['Option 1', 'Option 2', 'Option 3']}
+      options={[
+        { key: 'Option 1', value: 'Option 1' },
+        { key: 'Option 2', value: 'Option 2' },
+        { key: 'Option 3', value: 'Option 3' }
+      ]}
       label="Select an option"
       name="selectField"
       register={jest.fn()}
@@ -32,7 +36,11 @@ describe('SelectField', () => {
   it('displays error message when there are errors', () => {
     render(
       <SelectField
-        options={['Option 1', 'Option 2', 'Option 3']}
+        options={[
+          { key: 'Option 1', value: 'Option 1' },
+          { key: 'Option 2', value: 'Option 2' },
+          { key: 'Option 3', value: 'Option 3' }
+        ]}
         label="Select an option"
         name="selectField"
         register={jest.fn()}

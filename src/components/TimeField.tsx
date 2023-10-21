@@ -6,14 +6,16 @@ interface TimeFieldProps {
   control: Control<any>;
   name: string;
   label: string;
+  defaultValue?: Date | null;
 }
 
-export default function TimeField({ control, name, label }: TimeFieldProps) {
+export default function TimeField({ control, name, label, defaultValue }: TimeFieldProps) {
   return (
     <Controller
       name={name}
       control={control}
       rules={{ required: true }}
+      defaultValue={defaultValue}
       render={({ field: { onChange, value }, fieldState: { error } }) => (
         <MuiTimeField
           label={label}

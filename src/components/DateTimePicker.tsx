@@ -7,9 +7,16 @@ interface DateTimePickerProps {
   name: string;
   label: string;
   type: 'date' | 'time';
+  defaultValue?: Date;
 }
 
-export default function DateTimePicker({ control, name, label, type }: DateTimePickerProps) {
+export default function DateTimePicker({
+  control,
+  name,
+  label,
+  type,
+  defaultValue
+}: DateTimePickerProps) {
   const PickerComponent = type === 'time' ? TimePicker : DatePicker;
 
   return (
@@ -17,7 +24,7 @@ export default function DateTimePicker({ control, name, label, type }: DateTimeP
       name={name}
       control={control}
       rules={{ required: true }}
-      defaultValue={new Date()}
+      defaultValue={defaultValue || new Date()}
       render={({ field: { onChange, value }, fieldState: { error } }) => (
         <PickerComponent
           label={label}
