@@ -1,7 +1,6 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { act, render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MockedProvider } from '@apollo/client/testing';
 import SignUp, { CREATE_USER } from './SignUp';
-import { act } from 'react-dom/test-utils';
 import { ApolloError } from '@apollo/client';
 import { SIGN_IN } from './SignIn';
 import { MemoryRouter } from 'react-router-dom';
@@ -21,6 +20,7 @@ const mocks = [
     result: {
       data: {
         createUser: {
+          id: 'user-id',
           name: 'Test User',
           email: 'user@example.com'
         }
@@ -41,6 +41,7 @@ const mocks = [
           access_token: 'access-token',
           user: {
             id: 'user-id',
+            email: 'user@example.com',
             name: 'Test User'
           }
         }

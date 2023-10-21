@@ -1,7 +1,6 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { act, render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MockedProvider } from '@apollo/client/testing';
 import SignIn, { SIGN_IN, SIGN_IN_OIDC } from './SignIn';
-import { act } from 'react-dom/test-utils';
 import { ApolloError } from '@apollo/client';
 import { MemoryRouter } from 'react-router-dom';
 import { GraphQLError } from 'graphql';
@@ -22,7 +21,8 @@ const mocks = [
           access_token: 'access-token',
           user: {
             id: 'user-id',
-            name: 'Test User'
+            name: 'Test User',
+            email: 'user@example.com'
           }
         }
       }
@@ -41,7 +41,8 @@ const mocks = [
           access_token: 'access-token',
           user: {
             id: 'user-id',
-            name: 'Test User'
+            name: 'Test User',
+            email: 'user@example.com'
           }
         }
       }

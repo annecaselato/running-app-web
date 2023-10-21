@@ -23,7 +23,6 @@ const renderGrid = () => {
       handleAdd={handleAddMock}
       handleEdit={handleEditMock}
       handleDelete={handleDeleteMock}
-      processRowUpdate={jest.fn()}
     />
   );
 };

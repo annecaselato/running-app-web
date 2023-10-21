@@ -1,9 +1,14 @@
-import { CalendarToday } from '@mui/icons-material';
+import { DirectionsRun, Home } from '@mui/icons-material';
 
 export const menuItems = [
   {
     text: 'Home',
-    icon: CalendarToday,
+    icon: Home,
     page: '/'
+  },
+  {
+    text: 'Types',
+    icon: DirectionsRun,
+    page: '/types'
   }
 ];

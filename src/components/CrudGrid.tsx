@@ -7,7 +7,6 @@ import {
   GridToolbarContainer,
   GridActionsCellItem,
   GridRowId,
-  GridRowModel,
   GridToolbar
 } from '@mui/x-data-grid';
 
@@ -37,7 +36,6 @@ interface CrudGridProps {
   handleAdd: () => void;
   handleEdit: (id: GridRowId) => void;
   handleDelete: (id: GridRowId) => void;
-  processRowUpdate: (newRow: GridRowModel) => GridRowModel;
 }
 
 export default function CrudGrid({
@@ -45,8 +43,7 @@ export default function CrudGrid({
   columns,
   handleAdd,
   handleEdit,
-  handleDelete,
-  processRowUpdate
+  handleDelete
 }: CrudGridProps) {
   const allColumns: GridColDef[] = [
     ...columns,
@@ -98,7 +95,6 @@ export default function CrudGrid({
         disableColumnMenu
         disableDensitySelector
         disableRowSelectionOnClick
-        processRowUpdate={processRowUpdate}
         slots={{
           toolbar: EditToolbar
         }}

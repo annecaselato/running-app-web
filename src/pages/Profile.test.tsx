@@ -1,7 +1,6 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { act, render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MockedProvider } from '@apollo/client/testing';
 import Profile, { DELETE_USER, UPDATE_PASSWORD, UPDATE_USER } from './Profile';
-import { act } from 'react-dom/test-utils';
 import { ApolloError } from '@apollo/client';
 import { MemoryRouter } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
