@@ -93,7 +93,7 @@ describe('Sign Up', () => {
     });
 
     await waitFor(() => {
-      expect(mockNavigate).toBeCalledWith('/', { replace: true });
+      expect(mockNavigate).toBeCalledWith('/sign-up/profile', { replace: true });
     });
   });
 

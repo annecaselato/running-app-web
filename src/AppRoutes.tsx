@@ -6,6 +6,7 @@ import SignIn from './pages/SignIn';
 import Profile from './pages/Profile';
 import Activity from './pages/Activity';
 import Types from './pages/Types';
+import SelectProfile from './pages/SelectProfile';
 
 export default function AppRoutes() {
   return (
@@ -17,6 +18,7 @@ export default function AppRoutes() {
         {/* Private routes */}
         <Route element={<PrivateRoute />}>
           <Route path="/" element={<Home />} />
+          <Route path="/sign-up/profile" element={<SelectProfile />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/activity" element={<Activity />} />
           <Route path="/types" element={<Types />} />
