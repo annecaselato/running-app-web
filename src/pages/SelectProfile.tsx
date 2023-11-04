@@ -8,6 +8,7 @@ import BackgroundImage from '../assets/background-4.jpg';
 import AthleteImage from '../assets/athlete.jpg';
 import CoachImage from '../assets/coach.jpg';
 import { EnumProfiles } from '../models/EnumProfiles';
+import { useEffect } from 'react';
 
 export const UPDATE_PROFILE = gql`
   mutation updateProfile($profile: String!) {
@@ -21,8 +22,15 @@ export const UPDATE_PROFILE = gql`
 `;
 
 export default function SelectProfile() {
+  const token = localStorage.getItem('access_token');
   const navigate = useNavigate();
   const [updateProfile] = useMutation(UPDATE_PROFILE);
+
+  useEffect(() => {
+    if (!token) {
+      navigate('/sign-in', { replace: true });
+    }
+  }, []);
 
   const handleUpdate = async (profile: string) => {
     try {

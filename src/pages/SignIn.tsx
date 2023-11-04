@@ -69,11 +69,7 @@ export default function SignIn() {
         localStorage.setItem('access_token', access_token);
         localStorage.setItem('user', JSON.stringify(user));
 
-        if (!user.profile) {
-          navigate('/sign-up/profile', { replace: true });
-        } else {
-          navigate('/', { replace: true });
-        }
+        navigate('/', { replace: true });
       }
     } catch (err) {
       if (err instanceof ApolloError && err.graphQLErrors.length) {
@@ -98,11 +94,7 @@ export default function SignIn() {
         localStorage.setItem('access_token', access_token);
         localStorage.setItem('user', JSON.stringify(user));
 
-        if (!user.profile) {
-          navigate('/sign-up/profile', { replace: true });
-        } else {
-          navigate('/', { replace: true });
-        }
+        navigate('/', { replace: true });
       }
     } catch (err) {
       if (err instanceof ApolloError && err.graphQLErrors.length) {

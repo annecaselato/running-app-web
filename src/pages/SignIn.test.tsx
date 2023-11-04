@@ -167,24 +167,6 @@ describe('Sign In', () => {
     });
   });
 
-  it('redirects to profile selection if user does not have one', async () => {
-    renderSignIn(mocks);
-
-    await act(async () => {
-      fireEvent.change(screen.getByLabelText(/email/i), {
-        target: { value: 'user@example.com' }
-      });
-      fireEvent.change(screen.getByLabelText('Password *'), {
-        target: { value: 'password123' }
-      });
-      fireEvent.click(screen.getByText('Sign In'));
-    });
-
-    await waitFor(() => {
-      expect(mockNavigate).toBeCalledWith('/sign-up/profile', { replace: true });
-    });
-  });
-
   it('handles API error', async () => {
     renderSignIn(errorMocks);
 
@@ -230,19 +212,6 @@ describe('Sign In', () => {
 
     await waitFor(() => {
       expect(mockNavigate).toBeCalledWith('/', { replace: true });
-    });
-  });
-
-  it('redirects to profile page if Google user doesnt have one', async () => {
-    mockGoogleError = false;
-    renderSignIn(mocks);
-
-    await act(async () => {
-      fireEvent.click(screen.getByText('Sign in with Google'));
-    });
-
-    await waitFor(() => {
-      expect(mockNavigate).toBeCalledWith('/sign-up/profile', { replace: true });
     });
   });
 
