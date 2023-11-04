@@ -31,7 +31,7 @@ describe('TeamForm', () => {
     });
   });
 
-  it('handles creation of teams correctly', async () => {
+  it('handles team creation correctly', async () => {
     renderForm();
 
     expect(screen.getByText('Add Team')).toBeInTheDocument();
@@ -62,7 +62,7 @@ describe('TeamForm', () => {
     });
   });
 
-  it('handles update of types correctly', async () => {
+  it('handles team update correctly', async () => {
     renderForm({ id: '1', name: 'Test Team', description: 'Team description', members: [] });
 
     expect(screen.getByText('Edit Team')).toBeInTheDocument();

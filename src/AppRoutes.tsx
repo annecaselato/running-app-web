@@ -8,6 +8,7 @@ import Activity from './pages/Activity';
 import Types from './pages/Types';
 import SelectProfile from './pages/SelectProfile';
 import Teams from './pages/Teams';
+import TeamMembers from './pages/TeamMembers';
 
 export default function AppRoutes() {
   return (
@@ -24,6 +25,7 @@ export default function AppRoutes() {
           <Route path="/activity" element={<Activity />} />
           <Route path="/types" element={<Types />} />
           <Route path="/teams" element={<Teams />} />
+          <Route path="/teams/:id" element={<TeamMembers />} />
         </Route>
       </Routes>
     </BrowserRouter>

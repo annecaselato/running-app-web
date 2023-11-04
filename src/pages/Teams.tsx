@@ -90,6 +90,7 @@ export default function Teams() {
         createMutation={CREATE_TEAM}
         updateMutation={UPDATE_TEAM}
         deleteMutation={DELETE_TEAM}
+        detailsPath="/teams"
       />
     </PageContainer>
   );
