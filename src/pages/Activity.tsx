@@ -2,7 +2,7 @@ import { gql, useQuery } from '@apollo/client';
 import { format } from 'date-fns';
 import { GridColDef } from '@mui/x-data-grid';
 import PageContainer from '../components/PageContainer';
-import ActivityForm from '../components/ActivityForm';
+import ActivityForm from '../forms/ActivityForm';
 import CrudPage from '../components/CrudPage';
 
 export const GET_USER_ACTIVITIES = gql`

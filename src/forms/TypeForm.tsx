@@ -15,7 +15,7 @@ const modalStyle = {
   p: 4
 };
 
-const activitySchema = yup.object({
+const teamSchema = yup.object({
   type: yup.string().required('Type is required').max(40),
   description: yup.string().max(300).optional()
 });
@@ -53,7 +53,7 @@ export default function TypeForm({
     register,
     formState: { errors },
     reset
-  } = useForm({ mode: 'onChange', resolver: yupResolver(activitySchema) });
+  } = useForm({ mode: 'onChange', resolver: yupResolver(teamSchema) });
 
   const onClose = () => {
     reset();

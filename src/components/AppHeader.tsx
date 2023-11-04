@@ -11,7 +11,12 @@ import {
   styled
 } from '@mui/material';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
-import { AccountCircle, Logout, Menu as MenuIcon, PersonOutline } from '@mui/icons-material';
+import {
+  Logout,
+  ManageAccountsRounded,
+  Menu as MenuIcon,
+  PersonOutline
+} from '@mui/icons-material';
 import { logout } from '../logout';
 
 interface AppHeaderProps {
@@ -88,7 +93,7 @@ export default function AppHeader({ title, openDrawer, handleDrawerOpen }: AppHe
           onClick={handleMenuClick}
           edge="end"
           size="small">
-          <AccountCircle fontSize="large" />
+          <ManageAccountsRounded fontSize="large" />
         </IconButton>
         <Menu
           id="user-menu"

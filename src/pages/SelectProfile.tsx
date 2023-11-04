@@ -1,12 +1,13 @@
 import { Grid, Typography } from '@mui/material';
+import { ApolloError, gql, useMutation } from '@apollo/client';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 import ActionCard from '../components/ActionCard';
 import BackgroundPage from '../components/BackgroundPage';
 import BackgroundImage from '../assets/background-4.jpg';
 import AthleteImage from '../assets/athlete.jpg';
 import CoachImage from '../assets/coach.jpg';
-import { ApolloError, gql, useMutation } from '@apollo/client';
-import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
+import { EnumProfiles } from '../models/EnumProfiles';
 
 export const UPDATE_PROFILE = gql`
   mutation updateProfile($profile: String!) {
@@ -52,7 +53,7 @@ export default function SelectProfile() {
             title="Athlete"
             description="Track your running activities and join teams."
             image={AthleteImage}
-            onClick={() => handleUpdate('Athlete')}
+            onClick={() => handleUpdate(EnumProfiles.ATHLETE)}
           />
         </Grid>
         <Grid item xs={5}>
@@ -60,7 +61,7 @@ export default function SelectProfile() {
             title="Coach"
             description="Manage teams, create training plans, and guide athletes."
             image={CoachImage}
-            onClick={() => handleUpdate('Coach')}
+            onClick={() => handleUpdate(EnumProfiles.COACH)}
           />
         </Grid>
       </Grid>

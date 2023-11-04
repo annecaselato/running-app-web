@@ -7,6 +7,7 @@ import Profile from './pages/Profile';
 import Activity from './pages/Activity';
 import Types from './pages/Types';
 import SelectProfile from './pages/SelectProfile';
+import Teams from './pages/Teams';
 
 export default function AppRoutes() {
   return (
@@ -22,6 +23,7 @@ export default function AppRoutes() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/activity" element={<Activity />} />
           <Route path="/types" element={<Types />} />
+          <Route path="/teams" element={<Teams />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -4,9 +4,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { format } from 'date-fns';
 import { Box, Button, Grid, InputAdornment, Modal, TextField, Typography } from '@mui/material';
-import DateTimePicker from './DateTimePicker';
-import TimeField from './TimeField';
-import SelectField from './SelectField';
+import DateTimePicker from '../components/DateTimePicker';
+import TimeField from '../components/TimeField';
+import SelectField from '../components/SelectField';
 import { Type } from './TypeForm';
 import { GET_USER_TYPES } from '../pages/Types';
 

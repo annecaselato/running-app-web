@@ -38,6 +38,7 @@ describe('AppRoutes', () => {
 
   it('renders home page for authenticated user', () => {
     localStorage.setItem('access_token', 'access-token');
+    localStorage.setItem('user', '{"id":"user-id","profile":"Athlete"}');
 
     renderHome();
 

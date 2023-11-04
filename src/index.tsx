@@ -34,7 +34,7 @@ const authMiddleware = new ApolloLink((operation, forward) => {
 const errorAfterware = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
     graphQLErrors.forEach(({ message }) => {
-      if (message === 'Invalid access token') logout();
+      if (message === 'Unauthorized access') logout();
     });
   }
 
