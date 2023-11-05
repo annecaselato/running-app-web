@@ -1,6 +1,7 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import MemberForm from './MemberForm';
+import { act } from 'react-dom/test-utils';
 
 const handleCloseMock = jest.fn();
 const handleCreateMock = jest.fn();
@@ -27,12 +28,16 @@ describe('MemberForm', () => {
 
     fireEvent.click(screen.getByText('Add Member'));
     fireEvent.click(screen.getByText('Add Member'));
-    fireEvent.change(screen.getAllByLabelText('Email')[0], {
-      target: { value: 'newmember@example.com' }
+
+    act(() => {
+      fireEvent.change(screen.getAllByLabelText('Email')[0], {
+        target: { value: 'newmember@example.com' }
+      });
+      fireEvent.change(screen.getAllByLabelText('Email')[1], {
+        target: { value: 'newmember@example.com' }
+      });
     });
-    fireEvent.change(screen.getAllByLabelText('Email')[1], {
-      target: { value: 'newmember@example.com' }
-    });
+
     fireEvent.click(screen.getAllByText('Remove')[0]);
     fireEvent.click(screen.getByText('Save'));
 

@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import { MockedProvider } from '@apollo/client/testing';
 import { MemoryRouter } from 'react-router-dom';
-import Teams, { GET_COACH_TEAMS } from './Teams';
+import CoachTeams, { GET_COACH_TEAMS } from './CoachTeams';
 
 const mocks = [
   {
@@ -15,13 +15,15 @@ const mocks = [
             id: '1',
             name: 'Team 1',
             description: 'Description 1',
-            createdAt: new Date()
+            createdAt: new Date(),
+            updatedAt: new Date()
           },
           {
             id: '2',
             name: 'Team 2',
             description: 'Description 2',
-            createdAt: new Date()
+            createdAt: new Date(),
+            updatedAt: new Date()
           }
         ]
       }
@@ -36,7 +38,7 @@ describe('Teams', () => {
     render(
       <MemoryRouter>
         <MockedProvider mocks={mocks} addTypename={false}>
-          <Teams />
+          <CoachTeams />
         </MockedProvider>
       </MemoryRouter>
     );

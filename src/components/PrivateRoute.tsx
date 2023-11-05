@@ -1,6 +1,6 @@
 import { Navigate, Outlet } from 'react-router-dom';
 
-export default function PrivateRoute({ profile }: { profile?: string }) {
+export default function PrivateRoute() {
   const token = localStorage.getItem('access_token');
   const userString = localStorage.getItem('user');
   const user = userString && JSON.parse(userString);
@@ -13,9 +13,5 @@ export default function PrivateRoute({ profile }: { profile?: string }) {
     return <Navigate to={'/sign-up/profile'} replace />;
   }
 
-  if (!profile || user.profile === profile) {
-    return <Outlet />;
-  }
-
-  return <Navigate to={'/'} replace />;
+  return <Outlet />;
 }

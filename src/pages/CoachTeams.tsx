@@ -3,8 +3,6 @@ import { GridColDef } from '@mui/x-data-grid';
 import CrudPage from '../components/CrudPage';
 import { gql, useQuery } from '@apollo/client';
 import TeamForm from '../forms/TeamForm';
-import { EnumProfiles } from '../models/EnumProfiles';
-import { logout } from '../logout';
 import { format } from 'date-fns';
 
 export const GET_COACH_TEAMS = gql`
@@ -15,15 +13,6 @@ export const GET_COACH_TEAMS = gql`
       description
       createdAt
       updatedAt
-    }
-  }
-`;
-
-export const GET_ATHLETE_TEAMS = gql`
-  query ListAthleteTeams {
-    listAthleteTeams {
-      invitations
-      teams
     }
   }
 `;
@@ -73,12 +62,8 @@ const columns: GridColDef[] = [
   }
 ];
 
-export default function Teams() {
-  const userString = localStorage.getItem('user');
-  if (!userString) logout();
-  const user = userString && JSON.parse(userString);
-  const listQuery = user.profile === EnumProfiles.COACH ? GET_COACH_TEAMS : GET_ATHLETE_TEAMS;
-  const { data, refetch } = useQuery(listQuery);
+export default function CoachTeams() {
+  const { data, refetch } = useQuery(GET_COACH_TEAMS);
 
   return (
     <PageContainer title="Teams">

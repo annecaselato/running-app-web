@@ -42,7 +42,8 @@ const mocks = [
           user: {
             id: 'user-id',
             email: 'user@example.com',
-            name: 'Test User'
+            name: 'Test User',
+            profile: 'Athlete'
           }
         }
       }

@@ -114,9 +114,9 @@ export default function TeamMembers() {
     }
   };
 
-  const handleDelete = async (id: GridRowId) => {
+  const handleDelete = async (memberId: GridRowId) => {
     try {
-      await deleteItem({ variables: { id } });
+      await deleteItem({ variables: { id: memberId } });
       refetch();
     } catch (err) {
       if (err instanceof ApolloError && err.graphQLErrors.length) {
@@ -127,8 +127,8 @@ export default function TeamMembers() {
     }
   };
 
-  const handleDetails = (id: GridRowId) => {
-    navigate(`/activity/${id}`, { replace: true });
+  const handleDetails = (memberId: GridRowId) => {
+    navigate(`/activity/${memberId}`, { replace: true });
   };
 
   return (

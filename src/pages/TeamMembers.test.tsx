@@ -1,4 +1,4 @@
-import { render, fireEvent, waitFor, screen } from '@testing-library/react';
+import { render, fireEvent, waitFor, screen, act } from '@testing-library/react';
 import { MockedProvider } from '@apollo/client/testing';
 import TeamMembers, { CREATE_MEMBER, DELETE_MEMBER, GET_TEAM } from './TeamMembers';
 import { MemoryRouter } from 'react-router-dom';
@@ -16,6 +16,11 @@ const mockGet = {
       getTeam: {
         id: 'your-team-id',
         name: 'Your Team Name',
+        description: '',
+        coach: {
+          id: 'coach-id',
+          name: 'Coach'
+        },
         members: [
           {
             id: 'member-1-id',
@@ -125,14 +130,18 @@ describe('TeamMembers', () => {
     });
   });
 
-  it('adds a new member', async () => {
+  it('adds a new member', () => {
     renderPage([mockGet, mockCreate]);
 
     fireEvent.click(screen.getByText('Add New'));
     fireEvent.click(screen.getByText('Add Member'));
-    fireEvent.change(screen.getAllByLabelText('Email')[0], {
-      target: { value: 'new-member@example.com' }
+
+    act(() => {
+      fireEvent.change(screen.getAllByLabelText('Email')[0], {
+        target: { value: 'new-member@example.com' }
+      });
     });
+
     fireEvent.click(screen.getByText('Save'));
   });
 
@@ -141,9 +150,13 @@ describe('TeamMembers', () => {
 
     fireEvent.click(screen.getByText('Add New'));
     fireEvent.click(screen.getByText('Add Member'));
-    fireEvent.change(screen.getAllByLabelText('Email')[0], {
-      target: { value: 'new-member@example.com' }
+
+    act(() => {
+      fireEvent.change(screen.getAllByLabelText('Email')[0], {
+        target: { value: 'new-member@example.com' }
+      });
     });
+
     fireEvent.click(screen.getByText('Save'));
 
     await waitFor(() => {

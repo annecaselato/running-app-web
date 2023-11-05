@@ -125,6 +125,7 @@ export default function CrudGrid({
       cellClassName: 'actions',
       headerAlign: 'left',
       width: actionsWidth,
+      minWidth: 70,
       getActions: ({ id, row }) => {
         const actionItems = [];
 
@@ -184,7 +185,7 @@ export default function CrudGrid({
         '& .textPrimary': {
           color: 'text.primary'
         },
-        backgroundColor: 'white',
+        backgroundColor: 'background.paper',
         borderRadius: 2
       }}>
       <DataGrid
