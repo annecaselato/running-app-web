@@ -8,6 +8,7 @@ import Activity from './pages/Activity';
 import Types from './pages/Types';
 import SelectProfile from './pages/SelectProfile';
 import TeamMembers from './pages/TeamMembers';
+import MemberActivity from './pages/MemberActivity';
 import Teams from './pages/Teams';
 
 export default function AppRoutes() {
@@ -23,6 +24,7 @@ export default function AppRoutes() {
           <Route path="/" element={<Home />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/activity" element={<Activity />} />
+          <Route path="/activity/:id" element={<MemberActivity />} />
           <Route path="/types" element={<Types />} />
           <Route path="/teams" element={<Teams />} />
           <Route path="/teams/:id" element={<TeamMembers />} />

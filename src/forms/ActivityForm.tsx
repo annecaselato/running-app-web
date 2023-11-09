@@ -34,16 +34,12 @@ const activitySchema = yup.object({
   duration: yup.date().nullable().typeError('Must be a time duration')
 });
 
-const status = [
-  { key: 'Planned', value: 'Planned' },
-  { key: 'Completed', value: 'Completed' },
-  { key: 'Canceled', value: 'Canceled' }
-];
+const status = ['Planned', 'Completed', 'Canceled'];
 
-interface ActivityBody {
+export interface ActivityBody {
   datetime: Date;
   status: string;
-  typeId: string;
+  type: string;
   goalDistance?: number | null;
   distance?: number | null;
   goalDuration?: string | null;
@@ -54,7 +50,7 @@ export interface Activity {
   id: string;
   datetime: Date;
   status: string;
-  type: Type;
+  type: string;
   goalDistance?: number | null;
   distance?: number | null;
   goalDuration?: string | null;
@@ -116,7 +112,7 @@ export default function ActivityForm({
     const newActivity = {
       datetime: new Date(`${formatedDate}T${formatedTime}`),
       status,
-      typeId: type,
+      type,
       goalDistance,
       distance,
       goalDuration: goalDuration && format(goalDuration, 'HH:mm:ss'),
@@ -162,19 +158,12 @@ export default function ActivityForm({
               </Grid>
               <Grid item xs={12}>
                 <SelectField
-                  options={
-                    data?.listTypes.map((type: Type) => ({ key: type.type, value: type.id })) || []
-                  }
+                  options={data?.listTypes.map((type: Type) => type.type) || []}
                   label="Type"
                   name="type"
                   register={register}
                   errors={errors}
-                  defaultValue={
-                    edit?.type && {
-                      key: edit.type.type,
-                      value: edit.type.id
-                    }
-                  }
+                  defaultValue={edit && edit.type}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -184,7 +173,7 @@ export default function ActivityForm({
                   name="status"
                   register={register}
                   errors={errors}
-                  defaultValue={edit && { key: edit.status, value: edit.status }}
+                  defaultValue={edit && edit.status}
                 />
               </Grid>
               <Grid item xs={6}>

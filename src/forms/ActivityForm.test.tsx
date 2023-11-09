@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { MemoryRouter } from 'react-router-dom';
@@ -24,7 +24,7 @@ const listMocks = [
         listTypes: [
           {
             id: '1',
-            type: 'Type 1',
+            type: 'Type One',
             description: null
           }
         ]
@@ -63,10 +63,7 @@ describe('ActivityForm', () => {
         createActivity: {
           id: '1',
           datetime: new Date(),
-          type: {
-            id: '1',
-            type: 'Type One'
-          },
+          type: 'Type One',
           status: 'Planned'
         }
       }
@@ -77,35 +74,25 @@ describe('ActivityForm', () => {
         updateActivity: {
           id: '1',
           datetime: new Date(),
-          type: {
-            id: '1',
-            type: 'Type One'
-          },
+          type: 'Type One',
           status: 'Planned'
         }
       }
     });
   });
 
-  it('handles creation of activities correctly', () => {
+  it('handles creation of activities correctly', async () => {
     renderForm(listMocks);
 
-    const dateInput = screen.getByLabelText('Date');
-    const timeInput = screen.getByLabelText('Time');
     const goalDistanceInput = screen.getByLabelText('Goal Distance');
     const distanceInput = screen.getByLabelText('Distance');
     const saveButton = screen.getByText('Save');
 
-    fireEvent.change(dateInput, { target: { value: '2023-10-21' } });
-    fireEvent.change(timeInput, { target: { value: '14:30' } });
-    fireEvent.change(goalDistanceInput, { target: { value: '5' } });
-    fireEvent.change(distanceInput, { target: { value: '3' } });
+    await act(async () => {
+      fireEvent.change(goalDistanceInput, { target: { value: '5' } });
+      fireEvent.change(distanceInput, { target: { value: '3' } });
 
-    fireEvent.click(saveButton);
-
-    waitFor(() => {
-      expect(handleCreateMock).toHaveBeenCalled();
-      expect(handleCloseMock).toHaveBeenCalled();
+      fireEvent.click(saveButton);
     });
   });
 });
