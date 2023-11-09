@@ -1,4 +1,4 @@
-import { DirectionsRun, Home } from '@mui/icons-material';
+import { Category, DirectionsRun, Groups, Home } from '@mui/icons-material';
 
 export const menuItems = [
   {
@@ -13,7 +13,12 @@ export const menuItems = [
   },
   {
     text: 'Types',
-    icon: DirectionsRun,
+    icon: Category,
     page: '/types'
+  },
+  {
+    text: 'Teams',
+    icon: Groups,
+    page: '/teams'
   }
 ];

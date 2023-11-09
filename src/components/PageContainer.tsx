@@ -46,7 +46,12 @@ export default function PageContainer({ title, children }: PageContainerProps) {
   };
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box
+      height={window.innerHeight}
+      sx={{
+        display: 'flex',
+        backgroundColor: (theme) => theme.palette.grey[100]
+      }}>
       <CssBaseline />
       <AppHeader title={title} openDrawer={open} handleDrawerOpen={handleDrawerOpen} />
       <NavigationMenu open={open} handleDrawerClose={handleDrawerClose} />

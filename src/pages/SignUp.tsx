@@ -3,11 +3,13 @@ import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Avatar, Box, Button, Container, Grid, Link, TextField, Typography } from '@mui/material';
+import { Avatar, Box, Button, Grid, Link, TextField, Typography } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { SIGN_IN } from './SignIn';
 import PasswordInput from '../components/PasswordInput';
 import { toast } from 'react-toastify';
+import BackgroundPage from '../components/BackgroundPage';
+import BackgroundImage from '../assets/background-1.jpg';
 
 export const CREATE_USER = gql`
   mutation CreateUser($name: String!, $email: String!, $password: String!) {
@@ -72,63 +74,55 @@ export default function SignUp() {
     localStorage.setItem('access_token', access_token);
     localStorage.setItem('user', JSON.stringify(user));
 
-    navigate('/', { replace: true });
+    navigate('/sign-up/profile', { replace: true });
   }
 
   return (
-    <Container component="main" maxWidth="xs">
-      <Box
-        sx={{
-          marginTop: 8,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center'
-        }}>
-        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign up
-        </Typography>
-        <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)} sx={{ mt: 3 }}>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                id="name"
-                label="Name"
-                autoFocus
-                {...register('name')}
-                error={!!errors.name}
-                helperText={errors.name && (errors.name.message as string)}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                id="email"
-                label="Email"
-                {...register('email')}
-                error={!!errors.email}
-                helperText={errors.email && (errors.email.message as string)}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <PasswordInput label="Password" name="password" register={register} errors={errors} />
-            </Grid>
+    <BackgroundPage image={`url(${BackgroundImage})`}>
+      <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+        <LockOutlinedIcon />
+      </Avatar>
+      <Typography component="h1" variant="h5">
+        Sign up
+      </Typography>
+      <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)} sx={{ mt: 3 }}>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <TextField
+              required
+              fullWidth
+              autoFocus
+              id="name"
+              label="Name"
+              {...register('name')}
+              error={!!errors.name}
+              helperText={errors.name && (errors.name.message as string)}
+            />
           </Grid>
-          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-            Sign Up
-          </Button>
-          <Grid container justifyContent="flex-end">
-            <Grid item>
-              <Link href="/sign-in">Already have an account? Sign in</Link>
-            </Grid>
+          <Grid item xs={12}>
+            <TextField
+              required
+              fullWidth
+              id="email"
+              label="Email"
+              {...register('email')}
+              error={!!errors.email}
+              helperText={errors.email && (errors.email.message as string)}
+            />
           </Grid>
-        </Box>
+          <Grid item xs={12}>
+            <PasswordInput label="Password" name="password" register={register} errors={errors} />
+          </Grid>
+        </Grid>
+        <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+          Sign Up
+        </Button>
+        <Grid container justifyContent="center">
+          <Grid item>
+            <Link href="/sign-in">Already have an account? Sign in</Link>
+          </Grid>
+        </Grid>
       </Box>
-    </Container>
+    </BackgroundPage>
   );
 }

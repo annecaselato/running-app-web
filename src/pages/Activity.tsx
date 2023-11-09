@@ -2,23 +2,23 @@ import { gql, useQuery } from '@apollo/client';
 import { format } from 'date-fns';
 import { GridColDef } from '@mui/x-data-grid';
 import PageContainer from '../components/PageContainer';
-import ActivityForm from '../components/ActivityForm';
+import ActivityForm from '../forms/ActivityForm';
 import CrudPage from '../components/CrudPage';
 
 export const GET_USER_ACTIVITIES = gql`
-  query ListActivities {
-    listActivities {
-      id
-      datetime
-      status
-      type {
+  query ListActivities($memberId: String) {
+    listActivities(listActivitiesInput: { memberId: $memberId }) {
+      name
+      rows {
         id
+        datetime
+        status
         type
+        goalDistance
+        distance
+        goalDuration
+        duration
       }
-      goalDistance
-      distance
-      goalDuration
-      duration
     }
   }
 `;
@@ -27,21 +27,23 @@ export const CREATE_ACTIVITY = gql`
   mutation CreateActivity(
     $datetime: String!
     $status: String!
-    $typeId: String!
+    $type: String!
     $goalDistance: Float
     $distance: Float
     $goalDuration: String
     $duration: String
+    $memberId: String
   ) {
     createActivity(
       createActivityInput: {
         datetime: $datetime
         status: $status
-        typeId: $typeId
+        type: $type
         goalDistance: $goalDistance
         distance: $distance
         goalDuration: $goalDuration
         duration: $duration
+        memberId: $memberId
       }
     ) {
       id
@@ -54,22 +56,24 @@ export const UPDATE_ACTIVITY = gql`
     $id: String!
     $datetime: String!
     $status: String!
-    $typeId: String!
+    $type: String!
     $goalDistance: Float
     $distance: Float
     $goalDuration: String
     $duration: String
+    $memberId: String
   ) {
     updateActivity(
       updateActivityInput: {
         id: $id
         datetime: $datetime
         status: $status
-        typeId: $typeId
+        type: $type
         goalDistance: $goalDistance
         distance: $distance
         goalDuration: $goalDuration
         duration: $duration
+        memberId: $memberId
       }
     ) {
       id
@@ -78,12 +82,12 @@ export const UPDATE_ACTIVITY = gql`
 `;
 
 export const DELETE_ACTIVITY = gql`
-  mutation DeleteActivity($id: String!) {
-    deleteActivity(deleteActivityInput: { id: $id })
+  mutation DeleteActivity($id: String!, $memberId: String) {
+    deleteActivity(deleteActivityInput: { id: $id, memberId: $memberId })
   }
 `;
 
-const columns: GridColDef[] = [
+export const columns: GridColDef[] = [
   {
     field: 'date',
     headerName: 'Date',
@@ -101,7 +105,6 @@ const columns: GridColDef[] = [
   {
     field: 'type',
     headerName: 'Type',
-    valueFormatter: ({ value }) => value?.type,
     editable: false,
     minWidth: 100,
     flex: 0.5
@@ -130,13 +133,11 @@ const columns: GridColDef[] = [
   {
     field: 'goalDuration',
     headerName: 'Goal Duration',
-    valueFormatter: ({ value }) => value && format(new Date(value), 'hh:mm:ss'),
     editable: false
   },
   {
     field: 'duration',
     headerName: 'Duration',
-    valueFormatter: ({ value }) => value && format(new Date(value), 'hh:mm:ss'),
     editable: false
   }
 ];
@@ -148,7 +149,7 @@ export default function Activity() {
     <PageContainer title="Activity">
       <CrudPage
         columns={columns}
-        rows={data?.listActivities || []}
+        rows={data?.listActivities?.rows || []}
         refetch={refetch}
         FormComponent={ActivityForm}
         createMutation={CREATE_ACTIVITY}

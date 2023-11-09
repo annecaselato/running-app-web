@@ -50,6 +50,52 @@ const mocks = [
   }
 ];
 
+const profileMocks = [
+  {
+    request: {
+      query: SIGN_IN,
+      variables: {
+        email: 'user@example.com',
+        password: 'password123'
+      }
+    },
+    result: {
+      data: {
+        signIn: {
+          access_token: 'access-token',
+          user: {
+            id: 'user-id',
+            name: 'Test User',
+            profile: 'Athlete',
+            email: 'user@example.com'
+          }
+        }
+      }
+    }
+  },
+  {
+    request: {
+      query: SIGN_IN_OIDC,
+      variables: {
+        token: 'id-token'
+      }
+    },
+    result: {
+      data: {
+        signInOIDC: {
+          access_token: 'access-token',
+          user: {
+            id: 'user-id',
+            name: 'Test User',
+            profile: 'Coach',
+            email: 'user@example.com'
+          }
+        }
+      }
+    }
+  }
+];
+
 const errorMocks = [
   {
     ...mocks[0],
@@ -104,7 +150,7 @@ jest.mock('@react-oauth/google', () => ({
 
 describe('Sign In', () => {
   it('renders SignIn component and submits form', async () => {
-    renderSignIn(mocks);
+    renderSignIn(profileMocks);
 
     await act(async () => {
       fireEvent.change(screen.getByLabelText(/email/i), {
@@ -140,7 +186,7 @@ describe('Sign In', () => {
   });
 
   it('handles form error', async () => {
-    renderSignIn(mocks);
+    renderSignIn(profileMocks);
 
     await act(async () => {
       fireEvent.change(screen.getByLabelText(/email/i), {
@@ -158,7 +204,7 @@ describe('Sign In', () => {
 
   it('handles Google Sign-In', async () => {
     mockGoogleError = false;
-    renderSignIn(mocks);
+    renderSignIn(profileMocks);
 
     await act(async () => {
       fireEvent.click(screen.getByText('Sign in with Google'));
@@ -171,7 +217,7 @@ describe('Sign In', () => {
 
   it('handles Google Sign-In error', async () => {
     mockGoogleError = true;
-    renderSignIn(mocks);
+    renderSignIn(profileMocks);
 
     await act(async () => {
       fireEvent.click(screen.getByText('Sign in with Google'));

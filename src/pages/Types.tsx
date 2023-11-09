@@ -1,7 +1,7 @@
 import { gql, useQuery } from '@apollo/client';
 import { GridColDef } from '@mui/x-data-grid';
 import PageContainer from '../components/PageContainer';
-import TypeForm from '../components/TypeForm';
+import TypeForm from '../forms/TypeForm';
 import CrudPage from '../components/CrudPage';
 
 export const GET_USER_TYPES = gql`

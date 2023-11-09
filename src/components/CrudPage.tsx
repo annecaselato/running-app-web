@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import { Box } from '@mui/material';
 import { GridColDef, GridRowId } from '@mui/x-data-grid';
 import CrudGrid from '../components/CrudGrid';
+import { useNavigate } from 'react-router-dom';
 
 interface CrudPageProps {
   columns: GridColDef[];
@@ -14,6 +15,7 @@ interface CrudPageProps {
   createMutation: DocumentNode;
   updateMutation: DocumentNode;
   deleteMutation: DocumentNode;
+  detailsPath?: string;
 }
 
 export default function CrudPage({
@@ -23,13 +25,15 @@ export default function CrudPage({
   FormComponent,
   createMutation,
   updateMutation,
-  deleteMutation
+  deleteMutation,
+  detailsPath
 }: CrudPageProps) {
   const [createItem] = useMutation(createMutation);
   const [updateItem] = useMutation(updateMutation);
   const [deleteItem] = useMutation(deleteMutation);
   const [editItem, setEditItem] = useState(undefined);
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
 
   const openFormModal = () => {
     setOpen(true);
@@ -83,6 +87,10 @@ export default function CrudPage({
     setOpen(true);
   };
 
+  const handleDetails = (id: GridRowId) => {
+    navigate(`${detailsPath}/${id}`, { replace: true });
+  };
+
   return (
     <Box sx={{ width: '100%', padding: { sm: 3 } }}>
       <CrudGrid
@@ -91,6 +99,7 @@ export default function CrudPage({
         handleAdd={openFormModal}
         handleDelete={handleDelete}
         handleEdit={handleEdit}
+        handleDetails={detailsPath ? handleDetails : undefined}
       />
       <FormComponent
         open={open}

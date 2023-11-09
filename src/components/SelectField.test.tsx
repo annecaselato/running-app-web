@@ -1,14 +1,13 @@
-import { fireEvent, render, screen, within } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import SelectField from './SelectField';
+import userEvent from '@testing-library/user-event';
+
+const options = ['Option 1', 'Option 2', 'Option 3'];
 
 const renderSelect = () =>
   render(
     <SelectField
-      options={[
-        { key: 'Option 1', value: 'Option 1' },
-        { key: 'Option 2', value: 'Option 2' },
-        { key: 'Option 3', value: 'Option 3' }
-      ]}
+      options={options}
       label="Select an option"
       name="selectField"
       register={jest.fn()}
@@ -20,27 +19,30 @@ describe('SelectField', () => {
   it('renders select field with default option', async () => {
     renderSelect();
 
-    expect(screen.getByLabelText('Option 1')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByLabelText('Select an option')).toBeInTheDocument();
+    });
   });
 
-  it('updates the selected option when changed', async () => {
+  it('updates the selected option when changed', () => {
     renderSelect();
 
-    fireEvent.mouseDown(screen.getByRole('button', { name: 'Select an option Option 1' }));
-    const listbox = within(screen.getByRole('listbox'));
-    fireEvent.click(listbox.getByText('Option 2'));
+    act(() => {
+      userEvent.click(screen.getByText('Option 1'));
+    });
 
-    expect(screen.getByRole('button', { name: 'Select an option Option 2' })).toBeInTheDocument();
+    act(() => {
+      userEvent.click(screen.getByText('Option 2'));
+    });
+
+    expect((screen.getAllByText('Option 2')[1] as HTMLOptionElement).selected).toBeTruthy();
+    expect((screen.getByText('Option 1') as HTMLOptionElement).selected).toBeFalsy();
   });
 
   it('displays error message when there are errors', () => {
     render(
       <SelectField
-        options={[
-          { key: 'Option 1', value: 'Option 1' },
-          { key: 'Option 2', value: 'Option 2' },
-          { key: 'Option 3', value: 'Option 3' }
-        ]}
+        options={options}
         label="Select an option"
         name="selectField"
         register={jest.fn()}

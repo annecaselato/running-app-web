@@ -11,21 +11,24 @@ const mocks = [
     },
     result: {
       data: {
-        listActivities: [
-          {
-            id: '1',
-            datetime: '2023-10-21T09:00:00Z',
-            status: 'Completed',
-            type: {
-              id: '2',
-              type: 'Running'
-            },
-            goalDistance: 10.0,
-            distance: 12.5,
-            goalDuration: 'PT1H30M',
-            duration: 'PT1H40M'
-          }
-        ]
+        listActivities: {
+          name: 'User',
+          rows: [
+            {
+              id: '1',
+              datetime: '2023-10-21T09:00:00Z',
+              status: 'Completed',
+              type: {
+                id: '2',
+                type: 'Running'
+              },
+              goalDistance: 10.0,
+              distance: 12.5,
+              goalDuration: '01:00:00',
+              duration: '01:40:00'
+            }
+          ]
+        }
       }
     }
   },

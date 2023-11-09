@@ -42,7 +42,8 @@ const mocks = [
           user: {
             id: 'user-id',
             email: 'user@example.com',
-            name: 'Test User'
+            name: 'Test User',
+            profile: 'Athlete'
           }
         }
       }
@@ -93,7 +94,7 @@ describe('Sign Up', () => {
     });
 
     await waitFor(() => {
-      expect(mockNavigate).toBeCalledWith('/', { replace: true });
+      expect(mockNavigate).toBeCalledWith('/sign-up/profile', { replace: true });
     });
   });
 
