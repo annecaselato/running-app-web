@@ -145,10 +145,9 @@ export default function AthleteTeams() {
             </Typography>
           )}
           {data?.listAthleteTeams.invitations.map((invitation: Invitation, index: number) => (
-            <>
+            <div key={invitation.id}>
               <ListItem
                 alignItems="flex-start"
-                key={invitation.id}
                 secondaryAction={
                   <Box
                     sx={{
@@ -189,7 +188,7 @@ export default function AthleteTeams() {
                 />
               </ListItem>
               {index + 1 < data?.listAthleteTeams.invitations.length && <Divider component="li" />}
-            </>
+            </div>
           ))}
         </List>
       </Box>

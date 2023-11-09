@@ -47,11 +47,11 @@ const mockListTeams = {
 const mockAccept = {
   request: {
     query: ACCEPT_INVITATION,
-    variables: { id: 'member-1-id' }
+    variables: { id: '1' }
   },
   result: {
     data: {
-      acceptInvitation: 'member-1-id'
+      acceptInvitation: '1'
     }
   }
 };

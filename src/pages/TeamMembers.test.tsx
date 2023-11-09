@@ -102,7 +102,7 @@ const renderPage = (mocks: any[]) => {
   render(
     <>
       <MemoryRouter>
-        <MockedProvider mocks={mocks}>
+        <MockedProvider mocks={mocks} addTypename={false}>
           <TeamMembers />
         </MockedProvider>
       </MemoryRouter>
@@ -130,19 +130,24 @@ describe('TeamMembers', () => {
     });
   });
 
-  it('adds a new member', () => {
-    renderPage([mockGet, mockCreate]);
+  it('adds a new member', async () => {
+    renderPage([mockGet, mockCreate, mockGet]);
 
     fireEvent.click(screen.getByText('Add New'));
+
+    await waitFor(() => {
+      expect(screen.queryByText('Add Member')).not.toBeNull();
+    });
+
     fireEvent.click(screen.getByText('Add Member'));
 
-    act(() => {
+    await act(async () => {
       fireEvent.change(screen.getAllByLabelText('Email')[0], {
         target: { value: 'new-member@example.com' }
       });
-    });
 
-    fireEvent.click(screen.getByText('Save'));
+      fireEvent.click(screen.getByText('Save'));
+    });
   });
 
   it('handles create error', async () => {
@@ -165,7 +170,7 @@ describe('TeamMembers', () => {
   });
 
   it('deletes a member', async () => {
-    renderPage([mockGet, mockDelete]);
+    renderPage([mockGet, mockDelete, mockGet]);
 
     await waitFor(() => {
       expect(screen.getByText('member1@example.com')).toBeInTheDocument();

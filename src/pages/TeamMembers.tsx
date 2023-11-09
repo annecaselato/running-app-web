@@ -52,6 +52,7 @@ const columns: GridColDef[] = [
   {
     field: 'name',
     headerName: 'Name',
+    valueGetter: (params) => params.row.user?.name,
     editable: false,
     minWidth: 200
   },
