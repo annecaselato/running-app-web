@@ -152,7 +152,7 @@ export default function SignIn() {
         </Box>
         <Grid container spacing={1} direction="column" alignItems="center" sx={{ marginTop: 2 }}>
           <Grid item>
-            <Link href="">Forgot password?</Link>
+            <Link href="/recovery/email">Forgot password?</Link>
           </Grid>
           <Grid item>
             <Link href="/sign-up">{"Don't have an account? Sign Up"}</Link>

@@ -10,6 +10,8 @@ import SelectProfile from './pages/SelectProfile';
 import TeamMembers from './pages/TeamMembers';
 import MemberActivity from './pages/MemberActivity';
 import Teams from './pages/Teams';
+import PasswordRecovery from './pages/PasswordRecovery';
+import ForgotPassword from './pages/ForgotPassword';
 
 export default function AppRoutes() {
   return (
@@ -19,6 +21,8 @@ export default function AppRoutes() {
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="/sign-up/profile" element={<SelectProfile />} />
+        <Route path="/recovery/email" element={<ForgotPassword />} />
+        <Route path="/recovery/:token" element={<PasswordRecovery />} />
         {/* Private routes */}
         <Route element={<PrivateRoute />}>
           <Route path="/" element={<Home />} />

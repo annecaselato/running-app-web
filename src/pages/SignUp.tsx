@@ -119,7 +119,7 @@ export default function SignUp() {
         </Button>
         <Grid container justifyContent="center">
           <Grid item>
-            <Link href="/sign-in">Already have an account? Sign in</Link>
+            <Link href="/sign-in">Already have an account? Sign In</Link>
           </Grid>
         </Grid>
       </Box>
