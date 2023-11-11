@@ -8,7 +8,7 @@ import CrudPage from '../components/CrudPage';
 export const GET_USER_ACTIVITIES = gql`
   query ListActivities($memberId: String) {
     listActivities(listActivitiesInput: { memberId: $memberId }) {
-      name
+      user
       rows {
         id
         datetime

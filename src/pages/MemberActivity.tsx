@@ -87,7 +87,7 @@ export default function MemberActivity() {
   };
 
   return (
-    <PageContainer title={`Activity: ${data?.listActivities?.name}`}>
+    <PageContainer title={`Activity: ${data?.listActivities?.user}`}>
       <Box sx={{ width: '100%', padding: { sm: 3 } }}>
         <CrudGrid
           rows={data?.listActivities?.rows || []}

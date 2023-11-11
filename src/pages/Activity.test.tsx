@@ -12,7 +12,7 @@ const mocks = [
     result: {
       data: {
         listActivities: {
-          name: 'User',
+          user: 'User',
           rows: [
             {
               id: '1',
