@@ -1,14 +1,13 @@
+import { useEffect } from 'react';
 import { Grid, Typography } from '@mui/material';
 import { ApolloError, gql, useMutation } from '@apollo/client';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import ActionCard from '../components/ActionCard';
 import BackgroundPage from '../components/BackgroundPage';
-import BackgroundImage from '../assets/background-4.jpg';
 import AthleteImage from '../assets/athlete.jpg';
 import CoachImage from '../assets/coach.jpg';
 import { EnumProfiles } from '../models/EnumProfiles';
-import { useEffect } from 'react';
 
 export const UPDATE_PROFILE = gql`
   mutation updateProfile($profile: String!) {
@@ -50,7 +49,7 @@ export default function SelectProfile() {
   };
 
   return (
-    <BackgroundPage image={`url(${BackgroundImage})`}>
+    <BackgroundPage>
       <Typography component="h1" variant="h5">
         Choose Your Profile
       </Typography>

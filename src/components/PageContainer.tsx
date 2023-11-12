@@ -13,6 +13,7 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
   alignItems: 'center',
   flexGrow: 1,
   width: '100%',
+  marginTop: 3,
   marginLeft: `-${drawerWidth}px`,
   ...(open && {
     [theme.breakpoints.up('sm')]: {

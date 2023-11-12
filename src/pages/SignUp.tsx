@@ -3,13 +3,12 @@ import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Avatar, Box, Button, Grid, Link, TextField, Typography } from '@mui/material';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import { Box, Button, Grid, Link, TextField, Typography } from '@mui/material';
+import { toast } from 'react-toastify';
 import { SIGN_IN } from './SignIn';
 import PasswordInput from '../components/PasswordInput';
-import { toast } from 'react-toastify';
 import BackgroundPage from '../components/BackgroundPage';
-import BackgroundImage from '../assets/background-1.jpg';
+import LogoImage from '../assets/original.png';
 
 export const CREATE_USER = gql`
   mutation CreateUser($name: String!, $email: String!, $password: String!) {
@@ -78,10 +77,17 @@ export default function SignUp() {
   }
 
   return (
-    <BackgroundPage image={`url(${BackgroundImage})`}>
-      <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-        <LockOutlinedIcon />
-      </Avatar>
+    <BackgroundPage>
+      <Box
+        component="img"
+        sx={{
+          height: 80,
+          margin: 1,
+          mb: 3
+        }}
+        alt="Run Quest logo."
+        src={LogoImage}
+      />
       <Typography component="h1" variant="h5">
         Sign up
       </Typography>
