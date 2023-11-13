@@ -8,7 +8,8 @@ import {
   MenuItem,
   ListItemIcon,
   ListItemText,
-  styled
+  styled,
+  Box
 } from '@mui/material';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import {
@@ -18,6 +19,7 @@ import {
   PersonOutline
 } from '@mui/icons-material';
 import { logout } from '../logout';
+import LogoImage from '../assets/white-icon.png';
 
 interface AppHeaderProps {
   title: string;
@@ -81,6 +83,15 @@ export default function AppHeader({ title, openDrawer, handleDrawerOpen }: AppHe
           sx={{ mr: 2, ...(openDrawer && { display: 'none' }) }}>
           <MenuIcon />
         </IconButton>
+        <Box
+          component="img"
+          sx={{
+            height: 50,
+            mr: 1
+          }}
+          alt="Run Quest logo."
+          src={LogoImage}
+        />
         <Typography variant="h6" noWrap sx={{ flexGrow: 1 }}>
           {title}
         </Typography>

@@ -16,7 +16,7 @@ const mockGet = {
   result: {
     data: {
       listActivities: {
-        name: 'User',
+        user: 'User',
         rows: [
           {
             id: 'activity-1-id',

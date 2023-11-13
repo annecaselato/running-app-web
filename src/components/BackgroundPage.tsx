@@ -1,11 +1,11 @@
 import { Box, CssBaseline, Grid, Paper } from '@mui/material';
+import BackgroundImage from '../assets/background.jpg';
 
 interface PageContainerProps {
-  image: string;
   children: React.ReactNode;
 }
 
-export default function BackgroundPage({ image, children }: PageContainerProps) {
+export default function BackgroundPage({ children }: PageContainerProps) {
   return (
     <Grid container component="main" sx={{ height: '100vh' }}>
       <CssBaseline />
@@ -14,7 +14,7 @@ export default function BackgroundPage({ image, children }: PageContainerProps) 
         xs={false}
         md={8}
         sx={{
-          backgroundImage: image,
+          backgroundImage: `url(${BackgroundImage})`,
           backgroundRepeat: 'no-repeat',
           backgroundColor: (theme) => theme.palette.grey[50],
           backgroundSize: 'cover',

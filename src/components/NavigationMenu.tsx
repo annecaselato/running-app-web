@@ -9,10 +9,12 @@ import {
   Divider,
   IconButton,
   styled,
-  SvgIcon
+  SvgIcon,
+  Box
 } from '@mui/material';
 import { ChevronLeft } from '@mui/icons-material';
 import { menuItems } from '../constants/menuItems';
+import LogoImage from '../assets/original.png';
 
 interface AppDrawerProps {
   open: boolean;
@@ -24,7 +26,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   alignItems: 'center',
   padding: theme.spacing(0, 1),
   ...theme.mixins.toolbar,
-  justifyContent: 'flex-end'
+  justifyContent: 'space-between'
 }));
 
 export default function NavigationMenu({ open, handleDrawerClose }: AppDrawerProps) {
@@ -48,6 +50,16 @@ export default function NavigationMenu({ open, handleDrawerClose }: AppDrawerPro
       anchor="left"
       open={open}>
       <DrawerHeader>
+        <Box
+          component="img"
+          sx={{
+            height: 48,
+            margin: 1,
+            ml: 2
+          }}
+          alt="Run Quest logo."
+          src={LogoImage}
+        />
         <IconButton aria-label="close drawer" onClick={handleDrawerClose}>
           <ChevronLeft />
         </IconButton>

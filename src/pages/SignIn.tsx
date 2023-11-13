@@ -4,12 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ApolloError, gql, useMutation } from '@apollo/client';
-import { Avatar, Box, Button, Grid, Link, TextField, Typography } from '@mui/material';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import { Box, Button, Grid, Link, TextField, Typography } from '@mui/material';
 import { GoogleCredentialResponse, GoogleLogin } from '@react-oauth/google';
 import PasswordInput from '../components/PasswordInput';
 import BackgroundPage from '../components/BackgroundPage';
-import BackgroundImage from '../assets/background-1.jpg';
+import LogoImage from '../assets/original.png';
 
 export const SIGN_IN = gql`
   mutation SignIn($email: String!, $password: String!) {
@@ -106,10 +105,17 @@ export default function SignIn() {
   };
 
   return (
-    <BackgroundPage image={`url(${BackgroundImage})`}>
-      <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-        <LockOutlinedIcon />
-      </Avatar>
+    <BackgroundPage>
+      <Box
+        component="img"
+        sx={{
+          height: 80,
+          margin: 1,
+          mb: 3
+        }}
+        alt="Run Quest logo."
+        src={LogoImage}
+      />
       <Typography component="h1" variant="h5">
         Sign in
       </Typography>
@@ -152,7 +158,7 @@ export default function SignIn() {
         </Box>
         <Grid container spacing={1} direction="column" alignItems="center" sx={{ marginTop: 2 }}>
           <Grid item>
-            <Link href="">Forgot password?</Link>
+            <Link href="/recovery/email">Forgot password?</Link>
           </Grid>
           <Grid item>
             <Link href="/sign-up">{"Don't have an account? Sign Up"}</Link>
