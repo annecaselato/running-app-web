@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { FetchResult, useQuery } from '@apollo/client';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -74,6 +75,7 @@ interface ActivityFormProps {
   handleCreate: (type: ActivityBody) => Promise<FetchResult<Activity> | undefined>;
   handleUpdate: (id: string, type: ActivityBody) => Promise<FetchResult<Activity> | undefined>;
   edit: Activity | undefined;
+  selectedDate?: Date;
 }
 
 export default function ActivityForm({
@@ -81,7 +83,8 @@ export default function ActivityForm({
   handleClose,
   handleCreate,
   handleUpdate,
-  edit
+  edit,
+  selectedDate
 }: ActivityFormProps) {
   const { data } = useQuery(GET_USER_TYPES);
   const {
@@ -91,6 +94,17 @@ export default function ActivityForm({
     control,
     reset
   } = useForm({ mode: 'onChange', resolver: yupResolver(activitySchema) });
+  const [types, setTypes] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (data) {
+      setTypes(data?.listTypes.map((type: Type) => type.type));
+    }
+
+    if (edit && !types.includes(edit.type)) {
+      setTypes(types.concat([edit.type]));
+    }
+  }, [data, edit]);
 
   const onClose = () => {
     reset();
@@ -127,7 +141,7 @@ export default function ActivityForm({
 
   return (
     <div>
-      <Modal open={open} onClose={handleClose}>
+      <Modal open={open} onClose={onClose}>
         <Box sx={modalStyle}>
           <Typography
             id="add-activity-modal-title"
@@ -144,7 +158,7 @@ export default function ActivityForm({
                   name="date"
                   label="Date"
                   type="date"
-                  defaultValue={edit?.datetime}
+                  defaultValue={edit?.datetime || selectedDate}
                 />
               </Grid>
               <Grid item xs={6}>
@@ -158,12 +172,12 @@ export default function ActivityForm({
               </Grid>
               <Grid item xs={12}>
                 <SelectField
-                  options={data?.listTypes.map((type: Type) => type.type) || []}
+                  options={types}
                   label="Type"
                   name="type"
                   register={register}
                   errors={errors}
-                  defaultValue={edit && edit.type}
+                  defaultValue={edit?.type}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -173,7 +187,7 @@ export default function ActivityForm({
                   name="status"
                   register={register}
                   errors={errors}
-                  defaultValue={edit && edit.status}
+                  defaultValue={edit?.status}
                 />
               </Grid>
               <Grid item xs={6}>

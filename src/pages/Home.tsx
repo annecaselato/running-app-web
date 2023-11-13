@@ -1,34 +1,120 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
+import { ApolloError, gql, useMutation, useQuery } from '@apollo/client';
 import PageContainer from '../components/PageContainer';
+import DayScheduleCard from '../components/DayScheduleCard';
+import ActivityForm, { Activity, ActivityBody } from '../forms/ActivityForm';
+import { useState } from 'react';
+import { CREATE_ACTIVITY, UPDATE_ACTIVITY } from './Activity';
+import { toast } from 'react-toastify';
+
+export const GET_WEEK_ACTIVITIES = gql`
+  query ListWeekActivities {
+    listWeekActivities {
+      day
+      activities {
+        id
+        datetime
+        status
+        type
+        goalDistance
+        distance
+        goalDuration
+        duration
+      }
+    }
+  }
+`;
 
 export default function Home() {
+  const { data, refetch } = useQuery(GET_WEEK_ACTIVITIES);
+  const [createActivity] = useMutation(CREATE_ACTIVITY);
+  const [updateActivity] = useMutation(UPDATE_ACTIVITY);
+  const [open, setOpen] = useState(false);
+  const [editItem, setEditItem] = useState<Activity | undefined>(undefined);
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
+
+  const closeFormModal = () => {
+    setEditItem(undefined);
+    setSelectedDate(undefined);
+    setOpen(false);
+    refetch();
+  };
+
+  const handleCreate = async (body: ActivityBody) => {
+    try {
+      return await createActivity({ variables: body });
+    } catch (err) {
+      if (err instanceof ApolloError && err.graphQLErrors.length) {
+        toast.error(err.graphQLErrors[0].message, {
+          position: toast.POSITION.BOTTOM_CENTER
+        });
+      }
+    }
+  };
+
+  const handleUpdate = async (id: string, body: ActivityBody) => {
+    try {
+      return await updateActivity({ variables: { id, ...body } });
+    } catch (err) {
+      if (err instanceof ApolloError && err.graphQLErrors.length) {
+        toast.error(err.graphQLErrors[0].message, {
+          position: toast.POSITION.BOTTOM_CENTER
+        });
+      }
+    }
+  };
+
+  const handleAdd = (date: Date) => {
+    setSelectedDate(date);
+    setOpen(true);
+  };
+
+  const handleEdit = (activity: Activity) => {
+    setEditItem(activity);
+    setOpen(true);
+  };
+
   return (
     <PageContainer title={'Home'}>
-      <Box sx={{ padding: 3 }}>
-        <Typography paragraph>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-          ut labore et dolore magna aliqua. Rhoncus dolor purus non enim praesent elementum
-          facilisis leo vel. Risus at ultrices mi tempus imperdiet. Semper risus in hendrerit
-          gravida rutrum quisque non tellus. Convallis convallis tellus id interdum velit laoreet id
-          donec ultrices. Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl suscipit
-          adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra nibh cras.
-          Metus vulputate eu scelerisque felis imperdiet proin fermentum leo. Mauris commodo quis
-          imperdiet massa tincidunt. Cras tincidunt lobortis feugiat vivamus at augue. At augue eget
-          arcu dictum varius duis at consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem
-          donec massa sapien faucibus et molestie ac.
-        </Typography>
-        <Typography paragraph>
-          Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper eget nulla
-          facilisi etiam dignissim diam. Pulvinar elementum integer enim neque volutpat ac
-          tincidunt. Ornare suspendisse sed nisi lacus sed viverra tellus. Purus sit amet volutpat
-          consequat mauris. Elementum eu facilisis sed odio morbi. Euismod lacinia at quis risus sed
-          vulputate odio. Morbi tincidunt ornare massa eget egestas purus viverra accumsan in. In
-          hendrerit gravida rutrum quisque non tellus orci ac. Pellentesque nec nam aliquam sem et
-          tortor. Habitant morbi tristique senectus et. Adipiscing elit duis tristique sollicitudin
-          nibh sit. Ornare aenean euismod elementum nisi quis eleifend. Commodo viverra maecenas
-          accumsan lacus vel facilisis. Nulla posuere sollicitudin aliquam ultrices sagittis orci a.
-        </Typography>
+      <Typography variant="h5" sx={{ pt: 2 }}>
+        Week Schedule
+      </Typography>
+      <Box sx={{ margin: 2 }}>
+        <Grid
+          container
+          spacing={2}
+          columns={{ xs: 1, sm: 1, md: 4 }}
+          justifyContent="center"
+          alignItems="center">
+          <Grid item xs={1} sm={1} md={1}>
+            <DayScheduleCard
+              data={data?.listWeekActivities[0]}
+              handleAdd={handleAdd}
+              handleEdit={handleEdit}
+              isToday
+            />
+          </Grid>
+          <Grid item xs={1} sm={1} md={3}>
+            <Grid container spacing={2} columns={{ xs: 1, sm: 1, md: 3 }} alignItems="stretch">
+              {data?.listWeekActivities
+                .slice(1)
+                .map((item: { day: string; activities: Activity[] }, index: number) => (
+                  <Grid item key={index} xs={1} sm={1} md={1}>
+                    <DayScheduleCard data={item} handleAdd={handleAdd} handleEdit={handleEdit} />
+                  </Grid>
+                ))}
+            </Grid>
+          </Grid>
+        </Grid>
       </Box>
+      <ActivityForm
+        open={open}
+        handleClose={closeFormModal}
+        handleCreate={handleCreate}
+        handleUpdate={handleUpdate}
+        edit={editItem}
+        selectedDate={selectedDate}
+      />
     </PageContainer>
   );
 }
