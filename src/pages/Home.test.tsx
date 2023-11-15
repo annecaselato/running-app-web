@@ -1,4 +1,4 @@
-import { render, waitFor, screen, fireEvent, act } from '@testing-library/react';
+import { render, waitFor, screen, fireEvent } from '@testing-library/react';
 import { MockedProvider } from '@apollo/client/testing';
 import { MemoryRouter } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
@@ -19,13 +19,13 @@ const mockGet = {
     data: {
       listWeekActivities: [
         {
-          day: '3/10/2021',
+          day: new Date('2021-03-10T00:26:00.000'),
           activities: [
             {
               id: 'activity-1-id',
               type: 'Run',
               status: 'Completed',
-              datetime: new Date('2021-03-10T00:26:00.000Z'),
+              datetime: new Date('2021-03-10T00:26:00.000'),
               goalDistance: 10.0,
               distance: 12.5,
               goalDuration: '01:00:00',
@@ -44,7 +44,7 @@ const mockGet = {
               id: 'activity-2-id',
               type: 'Walk',
               status: 'Planned',
-              datetime: new Date('2021-03-12T00:26:00.000Z'),
+              datetime: new Date('2021-03-12T00:26:00.000'),
               goalDistance: 5.0,
               distance: null,
               goalDuration: null,
@@ -83,7 +83,7 @@ const updateRequest = {
   query: UPDATE_ACTIVITY,
   variables: {
     id: 'activity-1-id',
-    datetime: new Date('2021-03-10T00:26:00.000Z'),
+    datetime: new Date('2021-03-10T00:26:00.000'),
     status: 'Completed',
     type: 'Run',
     goalDistance: 10,
@@ -142,10 +142,6 @@ describe('Home', () => {
     await waitFor(() => {
       fireEvent.click(screen.getAllByText('Add New')[0]);
       expect(screen.getByText('Add Activity')).toBeInTheDocument();
-    });
-
-    await act(async () => {
-      fireEvent.click(screen.getByText('Save'));
     });
   });
 

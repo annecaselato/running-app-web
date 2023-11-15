@@ -13,7 +13,7 @@ import { Activity } from '../forms/ActivityForm';
 
 interface DayScheduleProps {
   data: {
-    day: string;
+    day: Date;
     activities: Activity[];
   };
   handleAdd: (date: Date) => void;
@@ -42,7 +42,7 @@ export default function DayScheduleCard({
           borderColor: (theme) => (isToday ? theme.palette.primary.main : theme.palette.grey[300])
         }}>
         <Typography component="h2" variant="h6" color="primary">
-          {format(new Date(data?.day), 'eeee, MMM dd')}
+          {format(new Date(data.day), 'eeee, MMM dd')}
         </Typography>
         <Button
           variant="outlined"
