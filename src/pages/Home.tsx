@@ -83,7 +83,6 @@ export default function Home() {
     setOpen(true);
   };
 
-  console.log(data);
   return (
     <PageContainer title={'Home'}>
       <Typography variant="h5" sx={{ pt: 2 }}>
@@ -108,7 +107,7 @@ export default function Home() {
             <Grid container spacing={2} columns={{ xs: 1, sm: 1, md: 3 }} alignItems="stretch">
               {data?.listWeekActivities
                 .slice(1)
-                .map((item: { day: string; activities: Activity[] }, index: number) => (
+                .map((item: { day: Date; activities: Activity[] }, index: number) => (
                   <Grid item key={index} xs={1} sm={1} md={1}>
                     <DayScheduleCard data={item} handleAdd={handleAdd} handleEdit={handleEdit} />
                   </Grid>

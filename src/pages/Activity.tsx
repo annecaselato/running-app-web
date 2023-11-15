@@ -25,7 +25,7 @@ export const GET_USER_ACTIVITIES = gql`
 
 export const CREATE_ACTIVITY = gql`
   mutation CreateActivity(
-    $datetime: String!
+    $datetime: DateTime!
     $status: String!
     $type: String!
     $goalDistance: Float
@@ -54,7 +54,7 @@ export const CREATE_ACTIVITY = gql`
 export const UPDATE_ACTIVITY = gql`
   mutation UpdateActivity(
     $id: String!
-    $datetime: String!
+    $datetime: DateTime!
     $status: String!
     $type: String!
     $goalDistance: Float

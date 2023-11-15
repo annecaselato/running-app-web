@@ -5,7 +5,7 @@ import { ToastContainer } from 'react-toastify';
 import { Activity } from '../forms/ActivityForm';
 
 const mockData = {
-  day: '11/12/2023',
+  day: new Date('2023-11-12T10:00:00'),
   activities: [
     {
       id: '1',
@@ -24,7 +24,7 @@ const mockHandleAdd = jest.fn();
 const mockHandleEdit = jest.fn();
 const mockIsToday = true;
 
-const renderComponent = (data: { day: string; activities: Activity[] }) => {
+const renderComponent = (data: { day: Date; activities: Activity[] }) => {
   render(
     <>
       <MemoryRouter>
