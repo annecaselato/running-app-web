@@ -10,7 +10,10 @@ import { UPDATE_ACTIVITY } from './Activity';
 
 const mockGet = {
   request: {
-    query: GET_WEEK_ACTIVITIES
+    query: GET_WEEK_ACTIVITIES,
+    variables: {
+      startAt: new Date('2021-03-10')
+    }
   },
   result: {
     data: {
@@ -118,6 +121,10 @@ const renderPage = (mocks: any) => {
 };
 
 describe('Home', () => {
+  beforeEach(() => {
+    jest.useFakeTimers().setSystemTime(new Date('2021-03-10'));
+  });
+
   it('renders home page with data', async () => {
     renderPage([mockGet, mockGetTypes]);
 
