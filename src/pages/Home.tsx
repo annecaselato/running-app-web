@@ -27,7 +27,15 @@ export const GET_WEEK_ACTIVITIES = gql`
 
 export default function Home() {
   const now = useRef(new Date());
-  const { data, refetch } = useQuery(GET_WEEK_ACTIVITIES, { variables: { startAt: now.current } });
+  const today = new Date(
+    now.current.getFullYear(),
+    now.current.getMonth(),
+    now.current.getDate(),
+    0,
+    0,
+    0
+  );
+  const { data, refetch } = useQuery(GET_WEEK_ACTIVITIES, { variables: { startAt: today } });
   const [createActivity] = useMutation(CREATE_ACTIVITY);
   const [updateActivity] = useMutation(UPDATE_ACTIVITY);
   const [open, setOpen] = useState(false);
@@ -75,6 +83,7 @@ export default function Home() {
     setOpen(true);
   };
 
+  console.log(data);
   return (
     <PageContainer title={'Home'}>
       <Typography variant="h5" sx={{ pt: 2 }}>

@@ -12,7 +12,7 @@ const mockGet = {
   request: {
     query: GET_WEEK_ACTIVITIES,
     variables: {
-      startAt: new Date('2021-03-10')
+      startAt: new Date('2021-03-10T00:00:00.000')
     }
   },
   result: {
@@ -122,7 +122,7 @@ const renderPage = (mocks: any) => {
 
 describe('Home', () => {
   beforeEach(() => {
-    jest.useFakeTimers().setSystemTime(new Date('2021-03-10'));
+    jest.useFakeTimers().setSystemTime(new Date('2021-03-10T00:00:00.000'));
   });
 
   it('renders home page with data', async () => {
