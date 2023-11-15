@@ -3,13 +3,13 @@ import { ApolloError, gql, useMutation, useQuery } from '@apollo/client';
 import PageContainer from '../components/PageContainer';
 import DayScheduleCard from '../components/DayScheduleCard';
 import ActivityForm, { Activity, ActivityBody } from '../forms/ActivityForm';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { CREATE_ACTIVITY, UPDATE_ACTIVITY } from './Activity';
 import { toast } from 'react-toastify';
 
 export const GET_WEEK_ACTIVITIES = gql`
-  query ListWeekActivities {
-    listWeekActivities {
+  query ListWeekActivities($startAt: DateTime!) {
+    listWeekActivities(listWeekActivitiesInput: { startAt: $startAt }) {
       day
       activities {
         id
@@ -26,7 +26,8 @@ export const GET_WEEK_ACTIVITIES = gql`
 `;
 
 export default function Home() {
-  const { data, refetch } = useQuery(GET_WEEK_ACTIVITIES);
+  const now = useRef(new Date());
+  const { data, refetch } = useQuery(GET_WEEK_ACTIVITIES, { variables: { startAt: now.current } });
   const [createActivity] = useMutation(CREATE_ACTIVITY);
   const [updateActivity] = useMutation(UPDATE_ACTIVITY);
   const [open, setOpen] = useState(false);
